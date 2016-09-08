@@ -17,8 +17,8 @@ internal final class ThreadLocal<T> {
     }
   }
 
-  private var _currentThread: NSThread {
-    return NSThread.currentThread()
+  fileprivate var _currentThread: Thread {
+    return Thread.current
   }
 
 }

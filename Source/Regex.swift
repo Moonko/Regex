@@ -37,7 +37,7 @@ public struct Regex: CustomStringConvertible, CustomDebugStringConvertible {
   public init(_ pattern: StaticString, options: Options = []) {
     do {
       regularExpression = try NSRegularExpression(
-        pattern: pattern.stringValue,
+        pattern: String(describing: pattern),
         options: options.toNSRegularExpressionOptions())
     } catch {
       preconditionFailure("unexpected error creating regex: \(error)")
@@ -54,7 +54,7 @@ public struct Regex: CustomStringConvertible, CustomDebugStringConvertible {
   ///
   /// - note: If the match is successful, `Regex.lastMatch` will be set with the
   ///   result of the match.
-  public func matches(string: String) -> Bool {
+  public func matches(_ string: String) -> Bool {
     return match(string) != nil
   }
 
@@ -67,9 +67,9 @@ public struct Regex: CustomStringConvertible, CustomDebugStringConvertible {
   /// - returns: An optional `MatchResult` describing the first match, or `nil`.
   ///
   /// - note: If the match is successful, the result is also stored in `Regex.lastMatch`.
-  public func match(string: String) -> MatchResult? {
+  public func match(_ string: String) -> MatchResult? {
     let match = regularExpression
-      .firstMatchInString(string, options: [], range: string.entireRange)
+      .firstMatch(in: string, options: [], range: string.entireRange)
       .map { MatchResult(string, $0) }
     Regex._lastMatch = match
     return match
@@ -84,9 +84,9 @@ public struct Regex: CustomStringConvertible, CustomDebugStringConvertible {
   /// - returns: An array of `MatchResult` describing every match in `string`.
   ///
   /// - note: If there is at least one match, the first is stored in `Regex.lastMatch`.
-  public func allMatches(string: String) -> [MatchResult] {
+  public func allMatches(_ string: String) -> [MatchResult] {
     let matches = regularExpression
-      .matchesInString(string, options: [], range: string.entireRange)
+      .matches(in: string, options: [], range: string.entireRange)
       .map { MatchResult(string, $0) }
     if let firstMatch = matches.first { Regex._lastMatch = firstMatch }
     return matches
@@ -110,9 +110,9 @@ public struct Regex: CustomStringConvertible, CustomDebugStringConvertible {
     return _lastMatch
   }
 
-  private static let _lastMatchKey = "me.sharplet.Regex.lastMatch"
+  fileprivate static let _lastMatchKey = "me.sharplet.Regex.lastMatch"
 
-  private static var _lastMatch: MatchResult? {
+  fileprivate static var _lastMatch: MatchResult? {
     get { return ThreadLocal(_lastMatchKey).value }
     set { ThreadLocal(_lastMatchKey).value = newValue }
   }

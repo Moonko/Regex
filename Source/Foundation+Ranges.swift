@@ -1,6 +1,6 @@
 internal extension NSTextCheckingResult {
   var ranges: [NSRange] {
-    return 0.stride(to: numberOfRanges, by: 1).map(rangeAtIndex)
+    return stride(from: 0, to: numberOfRanges, by: 1).map(rangeAt)
   }
 }
 

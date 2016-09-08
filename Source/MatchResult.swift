@@ -33,8 +33,8 @@ public struct MatchResult {
   /// - returns: The character range of the matched string.
   internal var range: Range<String.Index> {
     let utf16range = _result.range
-    let start = String.Index(utf16range.startIndex, within: _string)!
-    let end = String.Index(utf16range.endIndex, within: _string)!
+    let start = String.Index(utf16range.lowerBound, within: _string)!
+    let end = String.Index(utf16range.upperBound, within: _string)!
     return start..<end
   }
 
@@ -62,8 +62,8 @@ public struct MatchResult {
     return _result.result
   }
 
-  private let _result: _MatchResult
-  private let _string: String
+  fileprivate let _result: _MatchResult
+  fileprivate let _string: String
 
   internal init(_ string: String, _ result: NSTextCheckingResult) {
     self._result = _MatchResult(string.utf16, result)
@@ -75,10 +75,10 @@ public struct MatchResult {
 // Use of a private class allows for lazy vars without the need for `mutating`.
 private final class _MatchResult {
 
-  private let string: String.UTF16View
-  private let result: NSTextCheckingResult
+  fileprivate let string: String.UTF16View
+  fileprivate let result: NSTextCheckingResult
 
-  private init(_ string: String.UTF16View, _ result: NSTextCheckingResult) {
+  fileprivate init(_ string: String.UTF16View, _ result: NSTextCheckingResult) {
     self.string = string
     self.result = result
   }
@@ -99,15 +99,15 @@ private final class _MatchResult {
     return self.substringFromRange(self.rangeFromNSRange(self.result.range)!)
   }()
 
-  private func rangeFromNSRange(range: NSRange) -> Range<String.UTF16Index>? {
+  fileprivate func rangeFromNSRange(_ range: NSRange) -> Range<String.UTF16Index>? {
     guard range.location != NSNotFound else { return nil }
-    let start = string.startIndex.advancedBy(range.location)
-    let end = start.advancedBy(range.length)
+    let start = string.index(string.startIndex, offsetBy: range.location)
+    let end = string.index(start, offsetBy: range.length)
     return start..<end
   }
 
-  private func substringFromRange(range: Range<String.UTF16Index>) -> String {
-    return String(string[range])
+  fileprivate func substringFromRange(_ range: Range<String.UTF16Index>) -> String {
+    return String(describing: string[range])
   }
 
 }

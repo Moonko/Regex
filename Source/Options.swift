@@ -1,5 +1,5 @@
 /// `Options` defines alternate behaviours of regular expressions when matching.
-public struct Options: OptionSetType {
+public struct Options: OptionSet {
 
   /// Ignores the case of letters when matching.
   ///
@@ -41,11 +41,11 @@ internal extension Options {
   /// Transform an instance of `Regex.Options` into the equivalent `NSRegularExpressionOptions`.
   ///
   /// - returns: The equivalent `NSRegularExpressionOptions`.
-  func toNSRegularExpressionOptions() -> NSRegularExpressionOptions {
-    var options = NSRegularExpressionOptions()
-    if contains(.IgnoreCase) { options.insert(.CaseInsensitive) }
-    if contains(.IgnoreMetacharacters) { options.insert(.IgnoreMetacharacters) }
-    if contains(.AnchorsMatchLines) { options.insert(.AnchorsMatchLines) }
+  func toNSRegularExpressionOptions() -> NSRegularExpression.Options {
+    var options = NSRegularExpression.Options()
+    if contains(.IgnoreCase) { options.insert(.caseInsensitive) }
+    if contains(.IgnoreMetacharacters) { options.insert(.ignoreMetacharacters) }
+    if contains(.AnchorsMatchLines) { options.insert(.anchorsMatchLines) }
     return options
   }
 

@@ -15,16 +15,16 @@ extension String {
   /// - parameters:
   ///     - regex: A regular expression to match against `self`.
   ///     - template: A template string used to replace matches.
-  public mutating func replaceFirstMatching(regex: Regex, with template: String) {
+  public mutating func replaceFirstMatching(_ regex: Regex, with template: String) {
     if let match = regex.match(self) {
       let replacement = regex
         .regularExpression
-        .replacementStringForResult(match.matchResult,
-          inString: self,
+        .replacementString(for: match.matchResult,
+          in: self,
           offset: 0,
           template: template)
 
-      replaceRange(match.range, with: replacement)
+      replaceSubrange(match.range, with: replacement)
     }
   }
 
@@ -46,7 +46,7 @@ extension String {
   /// - parameters:
   ///     - pattern: A regular expression pattern to match against `self`.
   ///     - template: A template string used to replace matches.
-  public mutating func replaceFirstMatching(pattern: StaticString, with template: String) {
+  public mutating func replaceFirstMatching(_ pattern: StaticString, with template: String) {
     replaceFirstMatching(Regex(pattern), with: template)
   }
 
@@ -69,7 +69,7 @@ extension String {
   ///     - template: A template string used to replace matches.
   ///
   /// - returns: A string with the first match of `regex` replaced by `template`.
-  public func replacingFirstMatching(regex: Regex, with template: String) -> String {
+  public func replacingFirstMatching(_ regex: Regex, with template: String) -> String {
     var string = self
     string.replaceFirstMatching(regex, with: template)
     return string
@@ -95,7 +95,7 @@ extension String {
   ///     - template: A template string used to replace matches.
   ///
   /// - returns: A string with the first match of `pattern` replaced by `template`.
-  public func replacingFirstMatching(pattern: StaticString, with template: String) -> String {
+  public func replacingFirstMatching(_ pattern: StaticString, with template: String) -> String {
     return replacingFirstMatching(Regex(pattern), with: template)
   }
 
@@ -115,16 +115,16 @@ extension String {
   /// - parameters:
   ///     - regex: A regular expression to match against `self`.
   ///     - template: A template string used to replace matches.
-  public mutating func replaceAllMatching(regex: Regex, with template: String) {
-    for match in regex.allMatches(self).reverse() {
+  public mutating func replaceAllMatching(_ regex: Regex, with template: String) {
+    for match in regex.allMatches(self).reversed() {
       let replacement = regex
         .regularExpression
-        .replacementStringForResult(match.matchResult,
-          inString: self,
+        .replacementString(for: match.matchResult,
+          in: self,
           offset: 0,
           template: template)
 
-      replaceRange(match.range, with: replacement)
+      replaceSubrange(match.range, with: replacement)
     }
   }
 
@@ -146,7 +146,7 @@ extension String {
   /// - parameters:
   ///     - pattern: A regular expression pattern to match against `self`.
   ///     - template: A template string used to replace matches.
-  public mutating func replaceAllMatching(pattern: StaticString, with template: String) {
+  public mutating func replaceAllMatching(_ pattern: StaticString, with template: String) {
     replaceAllMatching(Regex(pattern), with: template)
   }
 
@@ -169,7 +169,7 @@ extension String {
   ///     - template: A template string used to replace matches.
   ///
   /// - returns: A string with all matches of `regex` replaced by `template`.
-  public func replacingAllMatching(regex: Regex, with template: String) -> String {
+  public func replacingAllMatching(_ regex: Regex, with template: String) -> String {
     var string = self
     string.replaceAllMatching(regex, with: template)
     return string
@@ -195,7 +195,7 @@ extension String {
   ///     - template: A template string used to replace matches.
   ///
   /// - returns: A string with all matches of `pattern` replaced by `template`.
-  public func replacingAllMatching(pattern: StaticString, with template: String) -> String {
+  public func replacingAllMatching(_ pattern: StaticString, with template: String) -> String {
     return replacingAllMatching(Regex(pattern), with: template)
   }
 
