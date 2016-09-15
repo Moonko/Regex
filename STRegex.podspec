@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = File.basename(__FILE__, ".podspec")
-  s.version      = %x(git describe --tags --abbrev=0).chomp.sub(/^v/, '')
+  s.version      = "0.5"
   s.summary      = "A Swift µframework providing an NSRegularExpression-backed Regex type"
   s.homepage     = "https://github.com/sharplet/Regex"
   s.license      = "LICENSE.txt"
